@@ -39,6 +39,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
               } else {
                 await Provider.of<TasksProvider>(context, listen: false)
                     .addTask(Task(title: title, date: date));
+                const snackBar = SnackBar(content: Text('Tarefa gravada com sucesso'));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 setState(() {
                   titleFieldController.text = '';
                   title = '';
