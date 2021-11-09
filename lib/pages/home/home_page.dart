@@ -35,6 +35,8 @@ class HomePage extends StatelessWidget {
           );
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

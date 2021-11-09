@@ -27,6 +27,28 @@ class _NewTaskPageState extends State<NewTaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+          tooltip: 'Salvar tarefa',
+          child: const Icon(Icons.save),
+          onPressed: () async {
+            try {
+              if (title.isEmpty) {
+                const snackBar = SnackBar(content: Text('Insira um título'));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              } else {
+                await Provider.of<TasksProvider>(context, listen: false)
+                    .addTask(Task(title: title, date: date));
+                setState(() {
+                  titleFieldController.text = '';
+                  title = '';
+                });
+              }
+            } catch (error) {
+              const snackBar = SnackBar(content: Text('Erro ao salvar nota'));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          }),
       appBar: AppBar(
         title: const Text(
           'Nova tarefa',
@@ -45,6 +67,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
             Column(
               children: [
                 TextField(
+                  autofocus: true,
                   controller: titleFieldController,
                   decoration: const InputDecoration(
                     labelText: 'Título',
@@ -91,28 +114,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
                 ),
               ],
             ),
-            ElevatedButton(
-                onPressed: () async {
-                  try {
-                    if (title.isEmpty) {
-                      const snackBar =
-                          SnackBar(content: Text('Insira um título'));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    } else {
-                      await Provider.of<TasksProvider>(context, listen: false)
-                          .addTask(Task(title: title, date: date));
-                      setState(() {
-                        titleFieldController.text = '';
-                        title = '';
-                      });
-                    }
-                  } catch (error) {
-                    const snackBar =
-                        SnackBar(content: Text('Erro ao salvar nota'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                },
-                child: const Text('Salvar'))
           ],
         ),
       ),
