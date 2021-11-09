@@ -1,6 +1,7 @@
 import 'package:f_tasks/pages/new_task/new_task_page.dart';
 import 'package:f_tasks/providers/tasks_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -27,7 +28,7 @@ class HomePage extends StatelessWidget {
                   (index) => Card(
                         child: ListTile(
                           title: Text(provider.tasks[index].title),
-                          trailing: Text(provider.tasks[index].date.toString()),
+                          trailing: Text(DateFormat.MMMd().format(provider.tasks[index].date)),
                         ),
                       )),
             ),
