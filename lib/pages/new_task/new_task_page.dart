@@ -47,7 +47,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
                 TextField(
                   controller: titleFieldController,
                   decoration: const InputDecoration(
-                    // icon: Icon(Icons.person),
                     labelText: 'Título',
                   ),
                   onChanged: (String value) {
@@ -93,17 +92,25 @@ class _NewTaskPageState extends State<NewTaskPage> {
               ],
             ),
             ElevatedButton(
-                onPressed: () {
-                  Provider.of<TasksProvider>(context, listen: false)
-                      .addTask(Task(title: title, date: date));
-                  setState(() {
-                    titleFieldController.text = '';
-                    title = '';
-                  });
-                  const snackBar =
-                      SnackBar(content: Text('Tarefa salva com sucesso'));
-
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                onPressed: () async {
+                  try {
+                    if (title.isEmpty) {
+                      const snackBar =
+                          SnackBar(content: Text('Insira um título'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    } else {
+                      await Provider.of<TasksProvider>(context, listen: false)
+                          .addTask(Task(title: title, date: date));
+                      setState(() {
+                        titleFieldController.text = '';
+                        title = '';
+                      });
+                    }
+                  } catch (error) {
+                    const snackBar =
+                        SnackBar(content: Text('Erro ao salvar nota'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 },
                 child: const Text('Salvar'))
           ],

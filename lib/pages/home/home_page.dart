@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Consumer<TasksProvider>(
         builder: (_, provider, __) {
-          return Container(
+          return SingleChildScrollView(
             child: Column(
               children: List.generate(
                   provider.tasks.length,

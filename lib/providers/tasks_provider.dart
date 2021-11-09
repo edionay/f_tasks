@@ -12,7 +12,7 @@ class TasksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addTask(Task task) async {
+  Future<void> addTask(Task task) async {
     await DatabaseHelper.instance.create(task);
     updateTasks();
   }
