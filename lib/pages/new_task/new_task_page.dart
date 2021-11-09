@@ -68,7 +68,9 @@ class _NewTaskPageState extends State<NewTaskPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: kDefaultPadding,),
+                    const SizedBox(
+                      width: kDefaultPadding,
+                    ),
                     ElevatedButton(
                         onPressed: () async {
                           DateTime? pickedDate = await showDatePicker(
@@ -79,7 +81,9 @@ class _NewTaskPageState extends State<NewTaskPage> {
                           if (pickedDate != null) {
                             setState(() {
                               date = pickedDate;
-                              dateFieldController.text = DateFormat.yMMMd().format(pickedDate).toString();
+                              dateFieldController.text = DateFormat.yMMMd()
+                                  .format(pickedDate)
+                                  .toString();
                             });
                           }
                         },
@@ -96,6 +100,10 @@ class _NewTaskPageState extends State<NewTaskPage> {
                     titleFieldController.text = '';
                     title = '';
                   });
+                  const snackBar =
+                      SnackBar(content: Text('Tarefa salva com sucesso'));
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 child: const Text('Salvar'))
           ],
