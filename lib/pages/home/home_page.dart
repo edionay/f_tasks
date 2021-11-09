@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
                   (index) => Card(
                         child: ListTile(
                           title: Text(provider.tasks[index].title),
-                          trailing: Text(DateFormat.MMMd().format(provider.tasks[index].date)),
+                          trailing: Text(DateFormat.yMMMd().format(provider.tasks[index].date)),
                         ),
                       )),
             ),

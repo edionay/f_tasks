@@ -2,6 +2,7 @@ import 'package:f_tasks/constants.dart';
 import 'package:f_tasks/models/task.dart';
 import 'package:f_tasks/providers/tasks_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class NewTaskPage extends StatefulWidget {
@@ -13,6 +14,15 @@ class NewTaskPage extends StatefulWidget {
 
 class _NewTaskPageState extends State<NewTaskPage> {
   String title = '';
+  DateTime date = DateTime.now();
+  var titleFieldController = TextEditingController();
+  var dateFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    dateFieldController.text = DateFormat.yMMMd().format(date).toString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,39 +45,45 @@ class _NewTaskPageState extends State<NewTaskPage> {
             Column(
               children: [
                 TextField(
+                  controller: titleFieldController,
                   decoration: const InputDecoration(
                     // icon: Icon(Icons.person),
                     labelText: 'Título',
                   ),
                   onChanged: (String value) {
-                   setState(() {
-                     title = value;
-                   });
+                    setState(() {
+                      title = value;
+                    });
                   },
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
                       child: TextField(
+                        enabled: false,
+                        controller: dateFieldController,
                         decoration: const InputDecoration(
-                          // icon: Icon(Icons.person),
                           labelText: 'Data',
                         ),
-                        onChanged: (value) {
-                          title = value;
-                        },
                       ),
                     ),
-                    ElevatedButton(onPressed: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2099));
-                      if(pickedDate != null) {
-                        print(pickedDate);
-                      }
-                    }, child: Text('Escolher'))
+                    const SizedBox(width: kDefaultPadding,),
+                    ElevatedButton(
+                        onPressed: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2010),
+                              lastDate: DateTime(2099));
+                          if (pickedDate != null) {
+                            setState(() {
+                              date = pickedDate;
+                              dateFieldController.text = DateFormat.yMMMd().format(pickedDate).toString();
+                            });
+                          }
+                        },
+                        child: const Text('Alterar'))
                   ],
                 ),
               ],
@@ -75,8 +91,9 @@ class _NewTaskPageState extends State<NewTaskPage> {
             ElevatedButton(
                 onPressed: () {
                   Provider.of<TasksProvider>(context, listen: false)
-                      .addTask(Task(title: title, date: DateTime.now()));
+                      .addTask(Task(title: title, date: date));
                   setState(() {
+                    titleFieldController.text = '';
                     title = '';
                   });
                 },
